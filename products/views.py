@@ -3,11 +3,13 @@ from .models import Product
 
 
 def all_products(request):
-    """ View for all products, including sorting and search queries """
+    """ A view to show all products, including sorting and search queries """
 
     products = Product.objects.all()
+
     context = {
         'products': products,
     }
-    return render(request, 'products/products.html', context)
 
+    return render(request, 'products/products.html', context)
+    
