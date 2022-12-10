@@ -2,3 +2,11 @@ pip3 install ...
 
 - Django==3.2
 - django-allauth==0.41.0
+- pillow
+
+May have to load data in terminal if no content shows ...
+
+python3 manage.py loaddata ...
+
+- catgories
+- products
