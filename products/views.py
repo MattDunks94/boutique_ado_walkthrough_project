@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 # Q is for making queries in one or two areas.(product name or description)
+from django.db.models.functions import Lower
 from django.db.models import Q
 from .models import Product, Category
 
