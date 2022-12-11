@@ -15,6 +15,7 @@ def all_products(request):
     direction = None
 
     if request.GET:
+        # Sorting products via price, rating
         if 'sort' in request.GET:
             sortkey = request.GET['sort']
             sort = sortkey
