@@ -12,3 +12,7 @@ python3 manage.py loaddata ...
 
 - categories
 - products
+
+Create super user 
+
+python3 manage.py createsuperuser
