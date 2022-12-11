@@ -13,6 +13,7 @@ def all_products(request):
     categories = None
 
     if request.GET:
+        # Filters by category name. (For the main nav links)
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             products = products.filter(category__name__in=categories)
@@ -39,7 +40,7 @@ def all_products(request):
 
 def product_detail(request, product_id):
     """ A view to show individual product details """
-
+    # pk = primary key
     product = get_object_or_404(Product, pk=product_id)
 
     context = {
