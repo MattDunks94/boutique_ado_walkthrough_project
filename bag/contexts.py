@@ -15,10 +15,14 @@ def bag_contents(request):
     product_count = 0
     bag = request.session.get('bag', {})
 
+    # Iterating through the shopping bag.
     for item_id, quantity in bag.items():
+        # Collect Product model and id.
         product = get_object_or_404(Product, pk=item_id)
+        # Add up total price.
         total += quantity * product.price
         product_count += quantity
+        # Dictionary of variables, allows us to use them in templates.
         bag_items.append({
             'item_id': item_id,
             'quantity': quantity,
