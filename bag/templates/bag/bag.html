@@ -28,6 +28,7 @@
             <div class="table-responsive rounded">
                 <table class="table table-sm table-borderless">
                     <thead class="text-black">
+                        <!-- scope attr. specifies the area of the table, in this case the "col"  -->
                         <tr>
                             <th scope="col">Product</th>
                             <th scope="col"></th>
@@ -36,7 +37,7 @@
                             <th scope="col">Subtotal</th>
                         </tr>
                     </thead>
-
+                    <!-- Iterating through bag items -->
                     {% for item in bag_items %}
                     <tr>
                         <td class="p-3 w-25">
@@ -44,25 +45,33 @@
                         </td>
                         <td class="py-3">
                             <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                            <!-- SKU = Product code -->
                             <p class="my-0 small text-muted">SKU: {{ item.product.sku | upper }}</p>
                         </td>
                         <td>
+                            <!-- Product Price -->
                             <p class="my-0">${{ item.product.price }}</p>
                         </td>
                         <td>
+                            <!-- Product Quantity -->
                             <p class="my-0">{{ item.quantity }}</p>
                         </td>
                         <td>
+                            <!-- Subtotal -->
                             <p class="my-0">${{ item.product.price }}</p>
                         </td>
                     </tr>
                     {% endfor %}
                     <tr>
                         <td colspan="5" class="pt-5 text-right">
+                            <!-- Bag total to 2 decimal places -->
                             <h6><strong>Bag Total: ${{ total|floatformat:2 }}</strong></h6>
+                            <!-- Delivery to 2 decimal places -->
                             <h6>Delivery: ${{ delivery|floatformat:2 }}</h6>
+                            <!-- Grand total -->
                             <h4 class="mt-4"><strong>Grand Total: ${{ grand_total|floatformat:2 }}</strong></h4>
                             {% if free_delivery_delta > 0 %}
+                            <!-- Prompting the customer to spend more to receive free delivery if they haven't reached the THRESHOLD -->
                             <p class="mb-1 text-danger">
                                 You could get free delivery by spending just <strong>${{ free_delivery_delta }}</strong>
                                 more!
@@ -92,6 +101,7 @@
             </div>
             {% else %}
             <p class="lead mb-5">Your bag is empty.</p>
+            <!-- Keep shopping btn -->
             <a href="{% url 'products' }" class="btn btn-outline-black rounded-0 btn-lg">
                 <span class="icon">
                     <i class="fas fa-chevron-left"></i>
