@@ -35,7 +35,6 @@ def all_products(request):
             # Sorts the products
             products = products.order_by(sortkey)
 
-
         # Filters by category name. (For the main nav links)
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
