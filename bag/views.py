@@ -13,7 +13,7 @@ def add_to_bag(request, item_id):
     redirect_url = request.POST.get('redirect_url')
     size = None
     if 'product_size' in request.POST:
-        size = request.POST['size']
+        size = request.POST['product_size']
     # session temporarily saves data, i.e users shopping bag contents.
     # Allows users to carry on shopping, deletes data once browser is closed.
     """ Collecting 'bag', if exists within the session, or create one if not. 
