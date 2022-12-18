@@ -49,7 +49,7 @@
                     <div class="form-row">
                         <!-- Assigning has_sizes to new variable 's' -->
                         {% with product.has_sizes as s %}
-                        {% is s %}
+                        {% if s %}
                         <!-- Size selector -->
                         <div class="col-12">
                             <p><strong>Size:</strong></p>

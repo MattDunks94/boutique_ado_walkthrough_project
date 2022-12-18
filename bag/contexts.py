@@ -16,18 +16,32 @@ def bag_contents(request):
     bag = request.session.get('bag', {})
 
     # Iterating through the shopping bag.
-    for item_id, quantity in bag.items():
-        # Collect Product model and id.
-        product = get_object_or_404(Product, pk=item_id)
-        # Add up total price.
-        total += quantity * product.price
-        product_count += quantity
-        # Dictionary of variables, allows us to use them in templates.
-        bag_items.append({
-            'item_id': item_id,
-            'quantity': quantity,
-            'product': product,
-        })
+    for item_id, item_data in bag.items():
+        # isistance checks if the first parameter is the following.
+        """ is item_data an integer? """
+        if isinstance(item_data, int):
+            # Collect Product model and id.
+            product = get_object_or_404(Product, pk=item_id)
+            # Add up total price.
+            total += item_data * product.price
+            product_count += item_data
+            # Dictionary of variables, allows us to use them in templates.
+            bag_items.append({
+                'item_id': item_id,
+                'quantity': item_data,
+                'product': product,
+            })
+        else:
+            for size, quantity in item_data['items_by_size'].items():
+                total += quantity * product.price
+                product_count += quantity
+                bag_items.append({
+                    'item_id': item_id,
+                    'quantity': item_data,
+                    'product': product,
+                    'size': size,
+                })
+
     """ Free delivery threshold = 50, If cost total is less than 50, 
     delivery charge is added."""
     if total < settings.FREE_DELIVERY_THRESHOLD:
