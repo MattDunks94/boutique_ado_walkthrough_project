@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    // Script for quantity input btn (+ -).
+
+    // Increment Quantity:
+    // Btn element with class '.increment-qty'.
+    $('.increment-qty').click(function(e) {
+        e.preventDefault();
+        // 'closest' method searches up the DOM, 'find' searches down.
+        // From btn element (this), up to 'closest' input-group class,
+        // and down to 'find' first element with class .qty-input.  
+        var closestInput = $(this).closest('.input-group').find('.qty-input')[0];
+        // Collecting input value, assigning it to 'currentValue' variable.
+        var currentValue = parseInt($(closestInput).val());
+        // Setting the input value to currentValue adding 1.
+        $(closestInput).val(currentValue + 1)
+    })
+        // Decrement Quantity:
+        // This does the same but decrements the value.
+        $('.decrement-qty').click(function(e) {
+        e.preventDefault();
+        var closestInput = $(this).closest('.input-group').find('.qty-input')[0];
+        var currentValue = parseInt($(closestInput).val());
+        $(closestInput).val(currentValue - 1)
+    })
+</script>
