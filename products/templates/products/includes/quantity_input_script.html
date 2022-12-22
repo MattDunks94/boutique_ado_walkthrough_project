@@ -1,28 +1,21 @@
 <script type="text/javascript">
     // Disabling buttons.
     function handleEnableDisable(itemId){
-        // Collecting input value via id attr. and itemId variable.
+        
         var currentValue = parseInt($(`#id_qty_${itemId}`));
-        // Disabaling input button if less than 2.
         var minusDisabled = currentValue < 2;
-        // Disabaling input button if more than 98.
         var plusDisabled = currentValue > 98;
-        // Adding 'disabled' attr. to input btn with id's.
         $(`#decrement-qty_${itemId}`).prop('disabled', minusDisabled);
         $(`#increment-qty_${itemId}`).prop('disabled', plusDisabled);
 
     }
-
-    // Disbaling the minus btn by default:
-    // all inputs.
+    
     var allQtyInputs = $('.qty-input');
-    // Iterating through all inputs and calling disabling function.
     for(var i = 0; i < allQtyInputs.length; i++){
         var itemId = $(allQtyInputs[i]).data('item_id');
         handleEnableDisable(itemId)
     }
-    // 'change' event occurs when the input value has changed.
-    // Calls the disbaling function everytime the value of inputs change.
+
     $('.qty-input').change(function(){
         var itemId = $(this).data('item-id');
         handleEnableDisable(itemId)
@@ -31,8 +24,7 @@
 
     // Script for quantity input btn (+ -).
 
-    // Increment Quantity:
-    // Btn element with class '.increment-qty'.
+    
     $('.increment-qty').click(function(e) {
         e.preventDefault();
         // 'closest' method searches up the DOM, 'find' searches down.
@@ -41,7 +33,7 @@
         var closestInput = $(this).closest('.input-group').find('.qty-input')[0];
         // Collecting input value, assigning it to 'currentValue' variable.
         var currentValue = parseInt($(closestInput).val());
-        // Setting the input value to currentValue adding 1.
+        
         $(closestInput).val(currentValue + 1)
         var itemId = $(this).data('item_id');
         handleEnableDisable(itemId)
@@ -57,4 +49,64 @@
         var itemId = $(this).data('item_id');
         handleEnableDisable(itemId)
     })
+</script>
+
+<script type="text/javascript">
+
+    // Disable +/- buttons outside 1-99 range
+    function handleEnableDisable(itemId) {
+        // Collecting input value via id attr. and itemId variable.
+        var currentValue = parseInt($(`#id_qty_${itemId}`).val());
+        // Disabaling minus input button if less than 2.
+        var minusDisabled = currentValue < 2;
+        // Disabaling plus input button if more than 98.
+        var plusDisabled = currentValue > 98;
+        // Adding 'disabled' attr. to input btn with id's.
+        $(`#decrement-qty_${itemId}`).prop('disabled', minusDisabled);
+        $(`#increment-qty_${itemId}`).prop('disabled', plusDisabled);
+    }
+
+    // Ensure proper enabling/disabling of all inputs on page load.
+    // all inputs.
+    var allQtyInputs = $('.qty_input');
+    // Iterating through all inputs and calling disabling function.
+    for(var i = 0; i < allQtyInputs.length; i++){
+        var itemId = $(allQtyInputs[i]).data('item_id');
+        handleEnableDisable(itemId);
+    }
+
+    // Check enable/disable every time the input is changed.
+    // 'change' event occurs when the input value has changed.
+    // Calls the disbaling function everytime the value of inputs change.
+    $('.qty_input').change(function() {
+        var itemId = $(this).data('item_id');
+        handleEnableDisable(itemId);
+    });
+
+    // Increment quantity:
+    // Btn element with class '.increment-qty'.
+    $('.increment-qty').click(function(e) {
+       e.preventDefault();
+        // 'closest' method searches up the DOM, 'find' searches down.
+        // From btn element (this), up to 'closest' input-group class,
+        // and down to 'find' first element with class .qty-input.
+       var closestInput = $(this).closest('.input-group').find('.qty_input')[0];
+        // Collecting input value, assigning it to 'currentValue' variable.
+       var currentValue = parseInt($(closestInput).val());
+        // Setting the input value to currentValue adding 1.
+       $(closestInput).val(currentValue + 1);
+       var itemId = $(this).data('item_id');
+       handleEnableDisable(itemId);
+    });
+
+    // Decrement quantity:
+    // This does the same as Increment but decrements the value.
+    $('.decrement-qty').click(function(e) {
+       e.preventDefault();
+       var closestInput = $(this).closest('.input-group').find('.qty_input')[0];
+       var currentValue = parseInt($(closestInput).val());
+       $(closestInput).val(currentValue - 1);
+       var itemId = $(this).data('item_id');
+       handleEnableDisable(itemId);
+    });
 </script>
