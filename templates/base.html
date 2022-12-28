@@ -136,7 +136,11 @@
         </div>
     </header>
     {% if messages %}
-    <div class="message-container"></div>
+    <div class="message-container">
+        {% for message in messages %}
+            {% include 'includes/toasts/toast_success.html' %}
+        {% endfor %}
+    </div>
     {% endif %}
 
     {% block page_header %}
@@ -146,6 +150,11 @@
     {% endblock %}
 
     {% block postloadjs %}
+    <script type="text/javascript">
+        // Bootstrap's 'toast' method with option of 'show'.
+        // This targets any element with the class of 'toast'.
+        $('.toast').toast('show')
+    </script>
     {% endblock %}
 
 </body>
