@@ -137,6 +137,7 @@
     </header>
     {% if messages %}
     <div class="message-container">
+        <!-- Displays messages/toasts depending on message level  -->
         {% for message in messages %}
             {% with message.level as level %}
                 <!-- level 40 is an error -->
