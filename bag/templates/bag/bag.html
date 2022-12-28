@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bag_tools %}
 
 {% block page_header %}
 <div class="container header-container">
@@ -93,11 +94,11 @@
                             <a class="update-link text-info"><small>Update</small></a>
                             <!-- Remove Item Link -->
                             <a class="remove-item text-danger float-right" id="remove_{{ item.item_id }}"
-                                data-size="{{ item.size }}"><small>Remove</small></a>
+                                data-product-size="{{ item.size }}"><small>Remove</small></a>
                         </td>
                         <td>
                             <!-- Subtotal -->
-                            <p class="my-0">${{ item.product.price }}</p>
+                            <p class="my-0">${{ item.product.price | calc_subtotal:item.quantity }}</p>
                         </td>
                     </tr>
                     {% endfor %}
@@ -141,7 +142,7 @@
             {% else %}
             <p class="lead mb-5">Your bag is empty.</p>
             <!-- Keep shopping btn -->
-            <a href="{% url 'products' }" class="btn btn-outline-black rounded-0 btn-lg">
+            <a href="{% url 'products' %}" class="btn btn-outline-black rounded-0 btn-lg">
                 <span class="icon">
                     <i class="fas fa-chevron-left"></i>
                 </span>
@@ -176,12 +177,12 @@
         // Gathering itemId via id attr. from class element (.remove-item)
         var itemId = $(this).attr('id').split('remove_')[1];
         // Getting the size data via data- attr. from class element.
-        var size = $(this).data('size');
+        var size = $(this).data('product_size');
         // URL for confirming removal of item.
-        var url = `/bag/remove/${itemId}`;
+        var url = `/bag/remove/${itemId}/`;
         // csrfmiddlewaretoken key will match the field django is expecting 
         // in request.post. 
-        var data = {'csrfmiddlewaretoken': csrfToken, 'size': size};
+        var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size};
         // Loads data when request.post
         $.post(url, data)
         // .done refers to when the data is posted.
