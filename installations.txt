@@ -3,6 +3,7 @@ pip3 install ...
 - Django==3.2
 - django-allauth==0.41.0
 - pillow
+- django-crispy-forms
 
 make migrations ...
 
