@@ -26,3 +26,23 @@ var style = {
 };
 // Mounting the card element to the div created in checkout.html, via id.
 card.mount('#card-element');
+
+// Handle realtime validation errors on the card element.
+// Listening for a change in the card number input.
+card.addEventListener('change', function (event) {
+    // Get element with id.
+    var errorDiv = document.getElementById('card-errors');
+    if (event.error) {
+        // If an error occurs, incorrect details, display message with fa icon.
+        var html = `
+        <span class="icon" role="alert">
+            <i class="fas fa-times"></i>
+        </span>
+        <span>${event.error.message}</span>
+        `
+        $(errorDiv).html(html);
+        // Otherwise display nothing.
+    } else {
+        errorDiv.textContent = '';
+    }
+});

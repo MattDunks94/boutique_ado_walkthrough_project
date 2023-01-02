@@ -4,6 +4,7 @@ pip3 install ...
 - django-allauth==0.41.0
 - pillow
 - django-crispy-forms
+- stripe
 
 make migrations ...
 
@@ -36,3 +37,8 @@ Modify items has_sizes field in database...
     (press enter twice to run for statement)
 
 - exit()
+
+Export Stripe env variables:
+
+- export STRIPE_PUBLIC_KEY=...
+- export STRIPE_SECRET_KEY=...
