@@ -174,8 +174,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 FREE_DELIVERY_THRESHOLD = 50
 STANDARD_DELIVERY_PERCENTAGE = 10
 STRIPE_CURRENCY = 'usd'
-STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', 'pk_test_51MLVZwFjejZeJgUo3dWSgHcDyWfFbwRJ3DNh3b3yFAfKa3QgeYAxQgUIkUB8ipqIxW8sjr5JLFJA9kJR34BDia1400yCf0Lk0I')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_51MLVZwFjejZeJgUo676YikxD1eX0kINVHQvM3cxqUF1Q0hBoc3bItXjCirku3qd9ACdpj5IaGCiXZOlFwJpkqhqG00GBq8QfSs')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

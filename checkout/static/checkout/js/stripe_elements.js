@@ -1,9 +1,9 @@
 
 // Collecting public key and client secret, slicing one character at either end.
-var stripe_public_key = $('#id_stripe_public_key').text().slice(1, -1);
-var client_secret = $('#id_client_secret').text().slice(1, -1);
+var stripePublicKey = $('#id_stripe_public_key').text().slice(1, -1);
+var clientSecret = $('#id_client_secret').text().slice(1, -1);
 // Setting up Stripe, pass it the public key.
-var stripe = Stripe(stripe_public_key);
+var stripe = Stripe(stripePublicKey);
 // Creating an instance of Stripe elements.
 var elements = stripe.elements();
 // Creating card element.
@@ -45,4 +45,41 @@ card.addEventListener('change', function (event) {
     } else {
         errorDiv.textContent = '';
     }
+});
+
+// Handle form submit
+var form = document.getElementById('payment-form');
+
+form.addEventListener('submit', function(ev) {
+    // Prevents default action 'POST'
+    ev.preventDefault();
+    // Disabaling card-element and submit btn to prevent multiple submissions. 
+    card.update({ 'disabled': true});
+    $('#submit-button').attr('disabled', true);
+    // Sending card details securely to Stripe. 
+    stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+            card: card,
+        }
+        // Card details results.
+    }).then(function(result) {
+        // If card details invalid, display error message.
+        if (result.error) {
+            var errorDiv = document.getElementById('card-errors');
+            var html = `
+                <span class="icon" role="alert">
+                <i class="fas fa-times"></i>
+                </span>
+                <span>${result.error.message}</span>`;
+            $(errorDiv).html(html);
+            // If an error occurs re-enable card-element and submit btn, setting them to false.
+            card.update({ 'disabled': false});
+            $('#submit-button').attr('disabled', false);
+            // Otherwise successful payment.
+        } else {
+            if (result.paymentIntent.status === 'succeeded') {
+                form.submit();
+            }
+        }
+    });
 });
