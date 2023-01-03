@@ -37,7 +37,8 @@ class Order(models.Model):
         """
         # Accessing fields from Order model (order_total)
         # and OrderLineItem model (order > 'lineitems', lineitem_total)
-        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum']
+        # Adding 'or 0' at the end stops an error from occuring.
+        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum'] or 0
         # Calculating delivery cost.
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
             self.delivery_cost = self.order_total * settings.STANDARD_DELIVERY_PERCENTAGE / 100
