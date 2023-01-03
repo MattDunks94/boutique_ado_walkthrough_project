@@ -50,12 +50,17 @@ card.addEventListener('change', function (event) {
 // Handle form submit
 var form = document.getElementById('payment-form');
 
+// Adding event listener when form submitted.
 form.addEventListener('submit', function(ev) {
     // Prevents default action 'POST'
     ev.preventDefault();
     // Disabaling card-element and submit btn to prevent multiple submissions. 
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
+    // Fading payment-form element. 
+    $('#payment-form').fadeToggle(100);
+    // Fading loading-overlay element. 
+    $('#loading-overlay').fadeToggle(100);
     // Sending card details securely to Stripe. 
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -72,6 +77,8 @@ form.addEventListener('submit', function(ev) {
                 </span>
                 <span>${result.error.message}</span>`;
             $(errorDiv).html(html);
+            $('#payment-form').fadeToggle(100);
+            $('#loading-overlay').fadeToggle(100);
             // If an error occurs re-enable card-element and submit btn, setting them to false.
             card.update({ 'disabled': false});
             $('#submit-button').attr('disabled', false);
