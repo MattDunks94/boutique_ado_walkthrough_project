@@ -6,6 +6,10 @@ from checkout.webhook_handler import StripeWH_Handler
 
 import stripe
 
+# This class method saves us from having to write if statements for each webhook.
+# There are 'hundreds' of webhook events.
+# Can reuse this code for other projects!
+
 
 @require_POST
 @csrf_exempt
@@ -43,10 +47,12 @@ def webhook(request):
     }
 
     # Get the webhook type from Stripe
+    # The type can be either payment_intent.succeeded or failed.
     event_type = event['type']
 
     # If there's a handler for it, get it from the event map
     # Use the generic one by default
+    # This looks up the 'key' within the event_map dic. (as seen above) 
     event_handler = event_map.get(event_type, handler.handle_event)
 
     # Call the event handler with the event
