@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
 
@@ -8,6 +9,20 @@ from products.models import Product
 from .models import Order, OrderLineItem
 from .forms import OrderForm
 from bag.contexts import bag_contents
+
+
+@require_POST
+def cache_checkout_data(request):
+    # Getting the client secret, splitting it after 'client'.
+    # That will be replaced with the payment_intent id.
+    pid = request.POST.get('client_secret').split('_secret')[0]
+    # Setting up Stripe with the SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    # 
+    stripe.PaymentIntent.modify(pid, metdata={
+        'bag': json.dump(request.session.get('bag'))
+    })
+
 
 
 # Checkout view.
