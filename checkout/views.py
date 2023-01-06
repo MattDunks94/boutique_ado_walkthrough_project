@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
 
 import stripe
+import json
 
 from products.models import Product
 from .models import Order, OrderLineItem
@@ -13,15 +14,29 @@ from bag.contexts import bag_contents
 
 @require_POST
 def cache_checkout_data(request):
-    # Getting the client secret, splitting it after 'client'.
-    # That will be replaced with the payment_intent id.
-    pid = request.POST.get('client_secret').split('_secret')[0]
-    # Setting up Stripe with the SECRET_KEY
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    # 
-    stripe.PaymentIntent.modify(pid, metdata={
-        'bag': json.dump(request.session.get('bag'))
-    })
+    """ Checking if the user ticked the 'save_info' box. """
+    try:
+        # Getting the client secret, splitting it after 'client'.
+        # That will be replaced with the payment_intent id.
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        # Setting up Stripe with the SECRET_KEY
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Modifying metadata.
+        # Collecting user, save_info decision and user's shopping bag.
+        stripe.PaymentIntent.modify(pid, metdata={
+            'bag': json.dumps(request.session.get('bag', {})),
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        # Return a successful response.
+        return HttpResponse(status=200)
+    
+    except Exception as e:
+        # If any errors occur, add error message and return the error message 
+        # content, along with a status of 400, bad request.
+        messages.error(request, 'Sorry, your payment cannot be \
+            processed right now. Please try again later.')
+        return HttpResponse(content=e, status=400)
 
 
 
