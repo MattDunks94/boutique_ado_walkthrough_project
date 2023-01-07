@@ -61,7 +61,22 @@ form.addEventListener('submit', function(ev) {
     $('#payment-form').fadeToggle(100);
     // Fading loading-overlay element. 
     $('#loading-overlay').fadeToggle(100);
-    // Sending card details securely to Stripe. 
+    // Checking the save info box 'checked' attribute.
+    var saveInfo = Boolean($('#id-save-info').attr('checked'));
+    // Getting the csrf token.
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    // Passing information to the view.
+    var postData = {
+        'csrfmiddlewaretoken': csrfToken,
+        'client_secret': clientSecret,
+        'save_info': saveInfo,
+    };
+    // Creating variable for the url being used.
+    var url = '/checkout/checkout_cache_data/';
+    // Posting the data to the url and posting the postData.
+    // Waiting for the payment intent update before confirming payment using .done method.
+    $.post(url, postData).done(function() {
+         // Sending card details securely to Stripe. 
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
             // Getting users paying method and billing details.
@@ -117,4 +132,8 @@ form.addEventListener('submit', function(ev) {
             }
         }
     });
+    }).fail(function() {
+        // If code 400 (error), reload page, error will be in django messages.
+        location.reload()
+    })
 });
