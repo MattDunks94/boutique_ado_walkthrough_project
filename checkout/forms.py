@@ -22,23 +22,24 @@ class OrderForm(forms.ModelForm):
             'full_name': 'Full Name',
             'email': 'Email Address',
             'phone_number': 'Phone Number',
-            'country': 'Country',
             'postcode': 'Postal Code',
             'town_or_city': 'Town or City',
             'street_address1': 'Street Address 1',
             'street_address2': 'Street Address 2',
-            'county': 'County',
+            'county': 'County, State or Locality',
         }
 
         # Cursor will be automatically placed on the 'full_name' field.
         self.fields['full_name'].widget.attrs['autofocus'] = True
         # Iterating through the fields, 
         for field in self.fields:
-            # If the field is required a '*' will be added to it.
-            if self.fields[field].required:
-                placeholder = f'{placeholders[field]} *'
-            else:
-                placeholder = placeholders[field]
+            # If country field doesn't exist. 
+            if field != 'country':
+                # If the field is required a '*' will be added to it.
+                if self.fields[field].required:
+                    placeholder = f'{placeholders[field]} *'
+                else:
+                    placeholder = placeholders[field]
             self.fields[field].widget.attrs['placeholder'] = placeholder
             # Adds css class to the fields.
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'

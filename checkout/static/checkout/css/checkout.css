@@ -38,6 +38,18 @@
     border: 1px solid #000;
 }
 
+/* Country select dropdown box, from checkout form */
+/* Color of option when chosen */
+select, 
+select option {
+  color: #000;
+}
+/* Color of option when field value is empty */
+select:invalid, 
+select option[value=""] {
+  color: #aab7c4;
+}
+
 /* Loading Spinner */
 #loading-overlay {
 	display: none;
