@@ -12,11 +12,11 @@ def profile(request):
     # User profile form as an instance to profile/user.
     form = UserProfileForm(instance=profile)
     # Getting profiles orders.
-    orders = profile.orders.all()
+    # orders = profile.orders.all()
     template = 'profiles/profile.html'
     context = {
         'form': form,
-        'orders': orders,
+        # 'orders': orders,
     }
 
     return render(request, template, context)
