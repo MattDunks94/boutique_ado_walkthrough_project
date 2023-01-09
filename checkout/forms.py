@@ -33,7 +33,7 @@ class OrderForm(forms.ModelForm):
         self.fields['full_name'].widget.attrs['autofocus'] = True
         # Iterating through the fields, 
         for field in self.fields:
-            # If country field doesn't exist. 
+            # If any fields are not equal to country ... 
             if field != 'country':
                 # If the field is required a '*' will be added to it.
                 if self.fields[field].required:

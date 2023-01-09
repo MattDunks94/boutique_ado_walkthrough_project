@@ -5,6 +5,7 @@ pip3 install ...
 - pillow
 - django-crispy-forms
 - stripe
+- django-countries
 
 make migrations ...
 

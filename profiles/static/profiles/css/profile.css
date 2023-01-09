@@ -1,0 +1,9 @@
+/* Users input text color */
+#profile-update-form .form-control {
+    color: #000;
+}
+
+/* Search bar placeholder color  */
+#profile-update-form input::placeholder {
+    color: #aab7c4;
+}
