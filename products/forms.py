@@ -9,10 +9,10 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = '__all__'
 
-    def __init__(self, args, **kwargs):
-        super().__init__(args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # Getting all categories.
-        categories = Categories.objects.all()
+        categories = Category.objects.all()
         # This syntax is called 'list comprehension'.
         # Shorthand for loop adding items to a list.
         # Iterates through categories and gets friendly names.
