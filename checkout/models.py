@@ -17,7 +17,7 @@ class Order(models.Model):
     order_number = models.CharField(max_length=32, null=False, editable=False)
     user_profile = models.ForeignKey(
         # SET_NULL allows users to keep order history even when deleting profile.
-        UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='Orders'
+        UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders'
     )
     full_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)

@@ -16,3 +16,8 @@
 #id_default_country option:first-child {
     color: #aab7c4;
 }
+
+.order-history {
+    max-height: 416px; /* Height of profile form + submit btn */
+    overflow-y: auto; /* if order history goes beyond the max-height, add scroll bar */
+}
