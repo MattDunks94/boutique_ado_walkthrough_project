@@ -44,7 +44,14 @@
                     {% for item in bag_items %}
                     <tr>
                         <td class="p-3 w-25">
-                            <img class="img-fluid rounded" src="{{ item.product.image.url }}" alt="">
+                            {%  if item.product.image %}
+                            <img class="img-fluid rounded w-100" src="{{ item.product.image.url }}"
+                                alt="{{ item.product.name }}">
+                            {% else %}
+                            <!-- If product has no image -->
+                            <img class="img-fluid rounded w-100" src="{{ MEDIA_URL }}noimage.png"
+                                alt="{{ item.product.name }}">
+                            {% endif %}
                         </td>
                         <td class="py-3">
                             <p class="my-0"><strong>{{ item.product.name }}</strong></p>
@@ -161,18 +168,18 @@
 {% include 'products/includes/quantity_input_script.html' %}
 
 <script type="text/javascript">
-        // Update quantity on click
-        // Collecting element with class .update-link.
-        $('.update-link').click(function(e) {
+    // Update quantity on click
+    // Collecting element with class .update-link.
+    $('.update-link').click(function (e) {
         // Collecting form via class. '.prev' method returns the previous sibling element.
         var form = $(this).prev('.update-form');
         // Submitting the updated form.
         form.submit();
     })
 
-     // Remove item and reload on click
-     // Collecting element via class .remove-item.
-     $('.remove-item').click(function(e) {
+    // Remove item and reload on click
+    // Collecting element via class .remove-item.
+    $('.remove-item').click(function (e) {
         // Collecting the csrf_token.
         var csrfToken = "{{ csrf_token }}";
         // Gathering itemId via id attr. from class element (.remove-item)
@@ -183,14 +190,18 @@
         var url = `/bag/remove/${itemId}/`;
         // csrfmiddlewaretoken key will match the field django is expecting 
         // in request.post. 
-        var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size};
+        var data = {
+            'csrfmiddlewaretoken': csrfToken,
+            'product_size': size
+        };
         // Loads data when request.post
         $.post(url, data)
-        // .done refers to when the data is posted.
-        // reloads the DOM.
-         .done(function() {
-             location.reload();
-         })});
+            // .done refers to when the data is posted.
+            // reloads the DOM.
+            .done(function () {
+                location.reload();
+            })
+    });
 </script>
 
 {% endblock %}

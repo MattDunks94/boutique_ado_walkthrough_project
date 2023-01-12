@@ -45,11 +45,15 @@ def all_products(request):
         if 'q' in request.GET:
             query = request.GET['q']
             if not query:
-                messages.error(request, "You didn't enter any search criteria!")
+                messages.error(
+                    request, "You didn't enter any search criteria!"
+                    )
                 return redirect(reverse('products'))
-            # the '|' is the or argument, 'i' in front of 'contains' 
+            # the '|' is the or argument, 'i' in front of 'contains'
             # makes the queries case insensitive.
-            queries = Q(name__icontains=query) | Q(description__icontains=query)
+            queries = Q(name__icontains=query) | Q(
+                description__icontains=query
+                )
             products = products.filter(queries)
 
     current_sorting = f'{sort}_{direction}'
@@ -74,15 +78,32 @@ def product_detail(request, product_id):
     }
 
     return render(request, 'products/product_detail.html', context)
-    
+
 
 def add_product(request):
     """ Add product to the store (admin use only) """
 
-    form = ProductForm()
+    if request.method == 'POST':
+        # New instance of the product form.
+        # .FILES captures images if one was submitted.
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Display success message if form is valid.
+            messages.success(request, 'Successfully added product!')
+            # Return to add_product view.
+            return redirect(reverse('add_product'))
+        else:
+            # Display error message if form is not valid.
+            messages.error(request, 'Failed to add product.\
+                Please ensure the form is valid.')
+    # Return empty form.
+    else:
+        form = ProductForm()
+
     template = 'products/add_product.html'
     context = {
         'form': form,
-    } 
+    }
 
     return render(request, template, context)
