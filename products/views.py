@@ -88,11 +88,11 @@ def add_product(request):
         # .FILES captures images if one was submitted.
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            product = form.save()
             # Display success message if form is valid.
             messages.success(request, 'Successfully added product!')
-            # Return to add_product view.
-            return redirect(reverse('add_product'))
+            # Redirect to product detail via it's id.
+            return redirect(reverse('product_detail', args=[product.id]))
         else:
             # Display error message if form is not valid.
             messages.error(request, 'Failed to add product.\
@@ -137,3 +137,15 @@ def edit_product(request, product_id):
     }
 
     return render(request, template, context)
+
+
+def delete_product(request, product_id):
+    """ Delete product from the store. """
+    # Getting the product.
+    product = get_object_or_404(Product, pk=product_id)
+    # Deleting the product.
+    product.delete()
+    # Display success message.
+    messages.success(request, 'Product deleted!')
+    # Redirect back to 'products' page.
+    return redirect(reverse('products'))
