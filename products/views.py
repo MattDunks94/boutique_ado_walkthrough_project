@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 # Q is for making queries in one or two areas.(product name or description)
 from django.db.models.functions import Lower
 from django.db.models import Q
@@ -80,8 +81,13 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', context)
 
 
+@login_required
 def add_product(request):
     """ Add product to the store (admin use only) """
+    # If user is not admin user.
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can add products.')
+        return redirect(reverse('home'))
 
     if request.method == 'POST':
         # New instance of the product form.
@@ -109,8 +115,14 @@ def add_product(request):
     return render(request, template, context)
 
 
+@login_required
 def edit_product(request, product_id):
     """ Edit product in the store """
+    # If user is not admin user.
+    if not request.user.is_superuser:
+        messages.error(request, 'Sorry, only store owners can edit products.')
+        return redirect(reverse('home'))
+        
     # Getting a product
     product = get_object_or_404(Product, pk=product_id)
     if request.method == 'POST':
@@ -139,8 +151,16 @@ def edit_product(request, product_id):
     return render(request, template, context)
 
 
+@login_required
 def delete_product(request, product_id):
     """ Delete product from the store. """
+    # If user is not admin user.
+    if not request.user.is_superuser:
+        messages.error(
+            request, 'Sorry, only store owners can delete products.'
+            )
+        return redirect(reverse('home'))
+
     # Getting the product.
     product = get_object_or_404(Product, pk=product_id)
     # Deleting the product.
